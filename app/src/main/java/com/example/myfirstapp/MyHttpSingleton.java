@@ -9,6 +9,8 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import org.json.JSONObject;
 
+import java.util.Map;
+
 public class MyHttpSingleton {
     private static MyHttpSingleton instance;
     private static Context ctx;

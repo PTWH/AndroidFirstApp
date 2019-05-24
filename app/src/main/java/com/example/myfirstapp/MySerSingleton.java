@@ -43,11 +43,11 @@ public class MySerSingleton implements IAccess {
         params.put("uniqueid", Unique);
         JSONObject parameters = new JSONObject(params);
 
+
         final JSONData jsd = new JSONData();
         jsd.uniqueid = Unique;
         jsd.JSONStr = parameters.toString();
         jsd.JSONUrl = theUrl;
-
         future = executorService.submit(new Callable(){
             @Override
             public Object call() throws Exception {
