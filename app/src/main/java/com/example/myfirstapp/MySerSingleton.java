@@ -19,17 +19,18 @@ import java.util.concurrent.Future;
 
 public class MySerSingleton implements IAccess {
     private static MySerSingleton instance;
-    private Context ctx;
+    private Context appCtx;
     private SimpleDateFormat sdf;
     private MyHttpSingleton httpInstance;
     private AppDatabase db;
     private ExecutorService executorService;
     private Future future;
+    private IAccess caller;
 
     private MySerSingleton(Context context) {
         executorService = Executors.newSingleThreadExecutor();
-        ctx = context;
-        db = FactoryRoom.getInstance(ctx);
+        appCtx = context;
+        db = FactoryRoom.getInstance(appCtx);
         sdf = new SimpleDateFormat(" - yyyy/MM/dd HH:mm:ss");
     }
 
@@ -38,11 +39,11 @@ public class MySerSingleton implements IAccess {
         return instance;
     }
 
-    public void doTheSerRequestWithJSON( String theUrl,  Map<String, String> params ) {
-        String Unique =  Settings.Secure.getString(ctx.getContentResolver(), Settings.Secure.ANDROID_ID) + sdf.format(new Date());
+    public void doTheSerRequestWithJSON( IAccess demandeur , String theUrl,  Map<String, String> params ) {
+        caller = demandeur;
+        String Unique =  Settings.Secure.getString(appCtx.getContentResolver(), Settings.Secure.ANDROID_ID) + sdf.format(new Date());
         params.put("uniqueid", Unique);
         JSONObject parameters = new JSONObject(params);
-
 
         final JSONData jsd = new JSONData();
         jsd.uniqueid = Unique;
@@ -58,7 +59,7 @@ public class MySerSingleton implements IAccess {
             }
         });
 
-        MyHttpSingleton httpInstance = MyHttpSingleton.getInstance(ctx);
+        MyHttpSingleton httpInstance = MyHttpSingleton.getInstance(appCtx);
         httpInstance.doTheHttpRequestWithJSON( this, jsd.JSONUrl,parameters );
     }
 
@@ -84,13 +85,12 @@ public class MySerSingleton implements IAccess {
                 return null;
             }
         });
-
-        ((IAccess) ctx).success(response);
+        caller.success(response);
     }
 
     @Override
     public void error(String error) {
-        ((IAccess) ctx).error(error );
+        caller.error(error );
     }
 
     public void showAll() {
@@ -113,8 +113,8 @@ public class MySerSingleton implements IAccess {
                 jsa.put(index, jso2);
             }
             jso.put("tab", jsa);
-            ((IAccess) ctx).success(jso);
+            caller.success(jso);
         }
-        catch( Exception e ) {((IAccess) ctx).error(e.getMessage());}
+        catch( Exception e ) {caller.error(e.getMessage());}
     }
 }

@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity implements IAccess {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        serInstance = MySerSingleton.getInstance(this);
+        serInstance = MySerSingleton.getInstance(this.getApplicationContext());
     }
 
     public void sendMessage(View view) {
@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity implements IAccess {
         Map<String, String> params = new HashMap();
         params.put("user", "touret");
         params.put("pass", "Washere69+-");
-        serInstance.doTheSerRequestWithJSON("http://ssl3-dev.dev.local/MEREVA/acces_reserve/TokenWrapper.asmx/Init",params);
+        serInstance.doTheSerRequestWithJSON(this,"http://ssl3-dev.dev.local/MEREVA/acces_reserve/TokenWrapper.asmx/Init",params);
     }
 
     @Override
