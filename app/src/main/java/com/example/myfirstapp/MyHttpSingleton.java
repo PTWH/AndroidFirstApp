@@ -13,7 +13,7 @@ import java.util.Map;
 
 public class MyHttpSingleton {
     private static MyHttpSingleton instance;
-    private static Context ctx;
+    private Context ctx;
     private RequestQueue requestQueue;
 
 
@@ -38,7 +38,7 @@ public class MyHttpSingleton {
         getRequestQueue().add(req);
     }
 
-    public void doTheHttpRequestWithJSON(final IAccess cmp , String url , JSONObject parameters) {
+    public void doThePostHttp(final IAccess cmp , String url , JSONObject parameters) {
         JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, url, parameters, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {

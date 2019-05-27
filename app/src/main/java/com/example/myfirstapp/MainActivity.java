@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity implements IAccess {
     }
 
     public void SqLiteAll(View view) {
-        serInstance.showAll();
+        serInstance.showAll(this);
     }
 
     private void httpAccess() {
