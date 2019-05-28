@@ -45,36 +45,37 @@ public class MainActivity extends AppCompatActivity implements IAccess {
     }
 
     private void httpAccess() {
+        EditText editText = (EditText) findViewById(R.id.editText);
+        String user = editText.getText().toString();
+        editText = (EditText) findViewById(R.id.pass);
+        String pass = editText.getText().toString();
         final String[] message = new String[1];
         Map<String, String> params = new HashMap();
-        params.put("user", "touret");
-        params.put("pass", "Washere69+-");
-        serInstance.doTheSerRequestWithJSON(this,"http://ssl3-dev.dev.local/MEREVA/acces_reserve/TokenWrapper.asmx/Init",params);
+        params.put("user", user);
+        params.put("pass", pass);
+        serInstance.doHttpRequestSecure(this,"http://ssl3-dev.dev.local/MEREVA/Android/InitApp.asmx/Init",params);
     }
 
     @Override
     public void success(JSONObject  response) {
+        String myMsg;
         try
         {
-            String token = null;
-            token = response.get("d").toString();
-            EditText editText = (EditText) findViewById(R.id.editText);
-            editText.setText(token );
-        }
-        catch( JSONException jse1 ) {
-            try {
-                JSONArray jsa = response.getJSONArray("tab");
-                for (int index = 0 ; index < jsa.length() ; index ++ ) {
-                    JSONObject jso1 = jsa.getJSONObject(index );
-                }
-            }
-            catch( JSONException jse2 ) {
-                error(jse2.getMessage());
+            JSONObject myObj = response.getJSONObject("d");
+            Boolean etat = myObj.getBoolean("Etat");
+            myMsg = myObj.getString("Resultat");
+            if (!etat ) {
+                error(myObj.getString("Resultat"));
                 return;
             }
         }
-        Button myButt = (Button)findViewById(R.id.button);
-        myButt.setEnabled(true);
+        catch( JSONException jse1 ) {
+            error(jse1.getMessage());
+            return;
+        }
+        Intent intent = new Intent(this, DisplayMessageActivity.class);
+        intent.putExtra(EXTRA_MESSAGE, myMsg);
+        startActivity(intent);
     }
 
     @Override

@@ -23,7 +23,7 @@ public class MySerSingleton implements IAccess {
         return instance;
     }
 
-    public void doTheSerRequestWithJSON( IAccess demandeur , String theUrl,  Map<String, String> params ) {
+    public void doHttpRequestSecure( IAccess demandeur , String theUrl,  Map<String, String> params ) {
         caller = demandeur;
         String Unique =  Settings.Secure.getString(appCtx.getContentResolver(), Settings.Secure.ANDROID_ID) + sdf.format(new Date());
         params.put("uniqueid", Unique);
