@@ -9,7 +9,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -31,13 +30,6 @@ public class MainActivity extends AppCompatActivity implements IAccess {
         Button myButt = (Button)findViewById(R.id.button);
         myButt.setEnabled(false);
         httpAccess();
-        /*
-        Intent intent = new Intent(this, DisplayMessageActivity.class);
-        EditText editText = (EditText) findViewById(R.id.editText);
-        String message = editText.getText().toString();
-        intent.putExtra(EXTRA_MESSAGE, message);
-        startActivity(intent);
-        */
     }
 
     public void SqLiteAll(View view) {
