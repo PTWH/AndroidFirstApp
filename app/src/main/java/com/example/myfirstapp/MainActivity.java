@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity implements IAccess {
         Map<String, String> params = new HashMap();
         params.put("user", user);
         params.put("pass", pass);
-        serInstance.doHttpRequestSecure(this,"http://ssl3-dev.dev.local/MEREVA/Android/InitApp.asmx/Init",params);
+        serInstance.doHttpRequest(this,"http://ssl3-dev.dev.local/MEREVA/Android/InitApp.asmx/Init",params,false);
     }
 
     @Override
@@ -57,12 +57,12 @@ public class MainActivity extends AppCompatActivity implements IAccess {
             Boolean etat = myObj.getBoolean("Etat");
             myMsg = myObj.getString("Resultat");
             if (!etat ) {
-                error(myObj.getString("Resultat"));
+                error(3,myObj.getString("Resultat"));
                 return;
             }
         }
         catch( JSONException jse1 ) {
-            error(jse1.getMessage());
+            error(2,jse1.getMessage());
             return;
         }
         Intent intent = new Intent(this, DisplayMessageActivity.class);
@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity implements IAccess {
     }
 
     @Override
-    public void error(String error) {
+    public void error(Integer typeError,String error) {
         Button myButt = (Button)findViewById(R.id.button);
         myButt.setEnabled(true);
         Toast toast = Toast.makeText(getApplicationContext(), error, Toast.LENGTH_LONG);

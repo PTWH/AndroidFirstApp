@@ -49,7 +49,7 @@ public class MyHttpSingleton {
             public void onErrorResponse(VolleyError error) {
                 String msg = error.getMessage();
                 if ( msg == null) msg = error.toString();
-                cmp.error(msg);
+                cmp.error(0,msg);
             }
         });
         addToRequestQueue(jsonRequest);

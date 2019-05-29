@@ -42,7 +42,10 @@ public class MySerSingleton implements IAccess {
         String Unique =  Settings.Secure.getString(ctx.getContentResolver(), Settings.Secure.ANDROID_ID) + sdf.format(new Date());
         params.put("uniqueid", Unique);
         JSONObject parameters = new JSONObject(params);
-
+        if ( isSecureRequest ) {
+            MyRoomSingleton roomInstance = MyRoomSingleton.getInstance(appCtx);
+            roomInstance.writeThePostHttp(Unique,parameters,theUrl);
+        }
 
         final JSONData jsd = new JSONData();
         jsd.uniqueid = Unique;
