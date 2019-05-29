@@ -17,13 +17,13 @@ import java.util.Map;
 
 public class MainActivity extends AppCompatActivity implements IAccess {
     public static final String EXTRA_MESSAGE = "com.example.myfirstapp.MESSAGE";
-    private MySerSingleton serInstance;
+    private MySerializer serInstance;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        serInstance = MySerSingleton.getInstance(this.getApplicationContext());
+        serInstance = MySerializer.getInstance(this.getApplicationContext());
     }
 
     public void sendMessage(View view) {
