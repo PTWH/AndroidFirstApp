@@ -7,23 +7,37 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity implements IAccess {
     public static final String EXTRA_MESSAGE = "com.example.myfirstapp.MESSAGE";
     private MySerializer serInstance;
+    private Spinner spin;
+    private String[] languageArray;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         serInstance = MySerializer.getInstance(this.getApplicationContext());
+
+        spin = (Spinner)findViewById(R.id.choixPays);
+        languageArray = getResources().getStringArray(R.array.code_lang_arrays);
+        String displayLanguage = Locale.getDefault().getLanguage();
+        for( int index = 0 ; index < languageArray.length ; index ++ ) {
+            if ( languageArray[index].equals(displayLanguage)) {
+                spin.setSelection(index);
+                break;
+            }
+        }
     }
 
     public void sendMessage(View view) {
@@ -45,6 +59,7 @@ public class MainActivity extends AppCompatActivity implements IAccess {
         Map<String, String> params = new HashMap();
         params.put("user", user);
         params.put("pass", pass);
+        params.put("lang", languageArray[ spin.getSelectedItemPosition() ] );
         serInstance.doHttpRequest(this,"http://ssl3-dev.dev.local/MEREVA/Android/InitApp.asmx/Init",params,false);
     }
 

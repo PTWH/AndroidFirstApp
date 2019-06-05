@@ -1,7 +1,16 @@
 <resources>
     <string name="app_name">My First App</string>
-    <string name="edit_message">Enter a message</string>
+    <string name="edit_message">Enter a login</string>
     <string name="button_send">Send</string>
-    <string name="button_see_all">Sqlite : tous les éléments</string>
+    <string name="button_see_all">Sqlite : all the rows</string>
     <string name="pass_message">Enter your password</string>
+    <string name="lang_prompt">Language</string>
+    <string-array name="lang_arrays">
+        <item>French</item>
+        <item>English</item>
+    </string-array>
+    <string-array name="code_lang_arrays">
+        <item>fr</item>
+        <item>en</item>
+    </string-array>
 </resources>

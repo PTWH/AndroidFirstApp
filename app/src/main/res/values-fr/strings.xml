@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Ma première apply</string>
+    <string name="button_see_all">Sqlite : tous les éléments</string>
+    <string name="button_send">Envoyer</string>
+    <string name="edit_message">Saisissez un login</string>
+    <string name="lang_prompt">Langue</string>
+    <string name="pass_message">Saisissez un mot de passe</string>
+    <string-array name="lang_arrays">
+        <item>Français</item>
+        <item>Anglais</item>
+    </string-array>
+</resources>
