@@ -3,6 +3,7 @@ package com.example.myfirstapp;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -22,6 +23,8 @@ public class MainActivity extends AppCompatActivity implements IAccess {
     private MySerializer serInstance;
     private Spinner spin;
     private String[] languageArray;
+    private String lang;
+    private String theToken;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,18 +62,30 @@ public class MainActivity extends AppCompatActivity implements IAccess {
         Map<String, String> params = new HashMap();
         params.put("user", user);
         params.put("pass", pass);
-        params.put("lang", languageArray[ spin.getSelectedItemPosition() ] );
+        lang = languageArray[ spin.getSelectedItemPosition() ];
+        params.put("lang", lang );
         serInstance.doHttpRequest(this,"http://ssl3-dev.dev.local/MEREVA/Android/InitApp.asmx/Init",params,false);
     }
 
     @Override
     public void success(JSONObject  response) {
-        String myMsg;
+        if ( response == null ) {
+            Locale locale = new Locale(lang);
+            Locale.setDefault(locale);
+            Configuration config = new Configuration();
+            config.setLocale( locale );
+            getBaseContext().getResources().updateConfiguration(config, null);
+
+            Intent intent = new Intent(this, DisplayMessageActivity.class);
+            intent.putExtra(EXTRA_MESSAGE, lang);
+            startActivity(intent);
+            return;
+        }
+        JSONObject myObj;
         try
         {
-            JSONObject myObj = response.getJSONObject("d");
+            myObj = response.getJSONObject("d");
             Boolean etat = myObj.getBoolean("Etat");
-            myMsg = myObj.getString("Resultat");
             if (!etat ) {
                 error(3,myObj.getString("Resultat"));
                 return;
@@ -80,9 +95,17 @@ public class MainActivity extends AppCompatActivity implements IAccess {
             error(2,jse1.getMessage());
             return;
         }
-        Intent intent = new Intent(this, DisplayMessageActivity.class);
-        intent.putExtra(EXTRA_MESSAGE, myMsg);
-        startActivity(intent);
+        JSONObject myObj2;
+        try {
+            myObj2 = myObj.getJSONObject("Resultat");
+            theToken = myObj2.getString("token");
+        }
+        catch( JSONException jse1 ) {
+            error(2,jse1.getMessage());
+            return;
+        }
+        serInstance.writeToken(this,theToken,lang);
+        serInstance.userTransfert = myObj2;
     }
 
     @Override

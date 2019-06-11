@@ -7,7 +7,7 @@ import androidx.room.migration.Migration;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
 public class FactoryRoom {
-
+/*
     static final Migration MIGRATION_1_2 = new Migration(1, 2) {
         @Override
         public void migrate(SupportSQLiteDatabase database) {
@@ -22,13 +22,19 @@ public class FactoryRoom {
         }
     };
 
+    static final Migration MIGRATION_3_4 = new Migration(3, 4) {
+        @Override
+        public void migrate(SupportSQLiteDatabase database) {
+        }
+    };
+*/
 
     public static AppDatabase getInstance(Context ctx) {
         AppDatabase db = Room.databaseBuilder(
                 ctx.getApplicationContext(),
                 AppDatabase.class,
-                "database-name")
-                .addMigrations(MIGRATION_1_2,MIGRATION_2_3)
+                "MY_DATABASE")
+                // .addMigrations(MIGRATION_1_2,MIGRATION_2_3,MIGRATION_3_4)
                 .build();
         return db;
     }

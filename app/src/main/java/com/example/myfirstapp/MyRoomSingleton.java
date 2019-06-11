@@ -5,6 +5,7 @@ import android.content.Context;
 import com.example.myfirstapp.Room.AppDatabase;
 import com.example.myfirstapp.Room.FactoryRoom;
 import com.example.myfirstapp.Room.JSONData;
+import com.example.myfirstapp.Room.TokenData;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -35,6 +36,22 @@ public class MyRoomSingleton {
         executorService = Executors.newSingleThreadExecutor();
     }
 
+    public void writeTheToken( String token,String lang) throws ExecutionException, InterruptedException {
+        if ( future != null ) future.get();
+        final TokenData td = new TokenData();
+        td.lang = lang;
+        td.token = token;
+        future = executorService.submit(new Callable(){
+            @Override
+            public Object call() throws Exception {
+                dataBase.tokenDataDao().deleteAll();
+                dataBase.tokenDataDao().insert(td);
+                return td;
+            }
+        });
+
+    }
+
     public void writeThePostHttp(String Unique, JSONObject parameters,String theUrl) {
         final JSONData jsd = new JSONData();
         jsd.uniqueid = Unique;
@@ -49,6 +66,13 @@ public class MyRoomSingleton {
         });
     }
 
+    public Object waitForFuture() throws InterruptedException, ExecutionException{
+        if ( future == null ) return null;
+        Object myObject = future.get();
+        future = null;
+        return myObject;
+    }
+
     public void waitForFutureAndDelete() throws InterruptedException, ExecutionException {
         if ( future == null ) return;
         final JSONData jsd = (JSONData) future.get();
@@ -56,7 +80,7 @@ public class MyRoomSingleton {
             @Override
             public Object call() throws Exception {
                 dataBase.jsonDataDao().delete(jsd);
-                return null;
+                return jsd;
             }
         });
     }

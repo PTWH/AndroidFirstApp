@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Ma première apply</string>
+    <string name="app_name">Ma première application</string>
     <string name="button_see_all">Sqlite : tous les éléments</string>
     <string name="button_send">Envoyer</string>
     <string name="edit_message">Saisissez un login</string>
@@ -10,4 +10,5 @@
         <item>Français</item>
         <item>Anglais</item>
     </string-array>
+    <string name="choix_app">Choisissez une application</string>
 </resources>

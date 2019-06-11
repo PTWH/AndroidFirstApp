@@ -1,13 +1,15 @@
 package com.example.myfirstapp;
 
-        import android.content.Context;
-        import android.provider.Settings;
-        import org.json.JSONObject;
-        import java.text.SimpleDateFormat;
-        import java.util.Date;
-        import java.util.Map;
+import android.content.Context;
+import android.provider.Settings;
+import org.json.JSONObject;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 public class MySerializer implements IAccess {
+    public Object userTransfert;
     private static MySerializer instance;
     private Context appCtx;
     private SimpleDateFormat sdf;
@@ -22,6 +24,18 @@ public class MySerializer implements IAccess {
     public static synchronized MySerializer getInstance(Context context) {
         if (instance == null) instance = new MySerializer(context);
         return instance;
+    }
+
+    public void writeToken(IAccess demandeur ,String token,String lang) {
+        caller = demandeur;
+        MyRoomSingleton roomInstance = MyRoomSingleton.getInstance(appCtx);
+        try {
+            roomInstance.writeTheToken( token, lang);
+            roomInstance.waitForFuture();
+            caller.success(null);
+        } catch (Exception e) {
+            error(1,e.getMessage() );
+        }
     }
 
     public void doHttpRequest(IAccess demandeur , String theUrl, Map<String, String> params , Boolean isSecureRequest ) {

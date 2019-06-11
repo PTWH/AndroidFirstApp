@@ -13,4 +13,5 @@
         <item>fr</item>
         <item>en</item>
     </string-array>
+    <string name="choix_app">Choose an application</string>
 </resources>
